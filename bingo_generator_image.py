@@ -3,6 +3,7 @@ import random
 import os
 from fpdf import FPDF
 from PIL import Image, ImageDraw, ImageFont
+from reportlab.pdfgen import canvas  # Import reportlab here
 
 def load_words(filename):
     with open(filename, 'r') as file:
@@ -69,52 +70,73 @@ def wrap_text(text, width, pdf):  # Add pdf as an argument
     lines.append(current_line.strip())
     return "\n".join(lines)
 
+def csv_to_image(csv_file, image_file):
+    with open(csv_file, 'r') as f:
+        reader = csv.reader(f)
+        data = list(reader)  # Read all data
+
+    cell_width = 150  # Adjust as needed
+    cell_height = 50  # Adjust as needed
+    font_size = 12
+    # font = ImageFont.truetype("arial.ttf", font_size)
+    
+    font_path = "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"  # Example path - REPLACE THIS!
+    font = ImageFont.truetype(font_path, font_size)
+    
+    num_cols = len(data[0])
+    num_rows = len(data)
+    image_width = num_cols * cell_width
+    image_height = num_rows * cell_height
+
+    img = Image.new('RGB', (image_width, image_height), color='white')
+    draw = ImageDraw.Draw(img)
+
+    for row_index, row in enumerate(data):
+        for col_index, cell in enumerate(row):
+            x1 = col_index * cell_width
+            y1 = row_index * cell_height
+            x2 = x1 + cell_width
+            y2 = y1 + cell_height
+
+            draw.rectangle([(x1, y1), (x2, y2)], outline='black')  # Cell borders
+
+            # Center the text (more or less)
+            text_width, text_height = draw.textsize(cell, font=font)
+            text_x = x1 + (cell_width - text_width) / 2
+            text_y = y1 + (cell_height - text_height) / 2
+            draw.text((text_x, text_y), cell, fill='black', font=font)
+
+    img.save(image_file)
+
+
 def display_bingo_boards(folder):
-    files = [f for f in os.listdir(folder) if f.endswith('.csv')]
-    pdf = FPDF()
-    pdf.set_auto_page_break(auto=True, margin=15)
-
+    files = [f for f in os.listdir(folder) if f.endswith('.csv')]  # <--- Define files here
     for file in files:
-        pdf.add_page()
-        pdf.set_font("Arial", style='B', size=16)
-        pdf.cell(200, 10, file.replace(".csv", ""), ln=True, align='C')
-        pdf.ln(5)
+        csv_file = os.path.join(folder, file)
+        image_file = os.path.join(folder, file.replace(".csv", ".png"))
+        pdf_file = os.path.join(folder, file.replace(".csv", ".pdf"))
 
-        with open(os.path.join(folder, file), 'r') as f:
+        csv_to_image(csv_file, image_file)
+
+        # Use reportlab for PDF conversion (more reliable and cross-platform)
+        with open(csv_file, 'r') as f: #Needed to get image width and height
             reader = csv.reader(f)
-            board = [row for row in reader]
+            data = list(reader)  # Read all data
 
-        num_cols = len(board[0])
-        cell_width = 190 / num_cols
-        cell_height = 20  # Adjusted cell height
+        cell_width = 150  # Adjust as needed
+        cell_height = 50  # Adjust as needed
 
-        for row in board:
-            pdf.set_x(10)  # Reset x position for new row
-            max_cell_height = 0  # To store max height of cells in the row
+        num_cols = len(data[0])
+        num_rows = len(data)
+        image_width = num_cols * cell_width
+        image_height = num_rows * cell_height
 
-            for cell in row[:num_cols]:
-                wrapped_text = wrap_text(cell, cell_width - 6, pdf)  # Smaller width for padding
-                
-                # Calculate required cell height based on content
-                lines = wrapped_text.split('\n')
-                required_height = len(lines) * 8 # Adjust 8 to fine tune line spacing. Lower number = less spacing
-                
-                # Store the max height of cells in the row
-                max_cell_height = max(max_cell_height, required_height)
+        c = canvas.Canvas(pdf_file)
+        c.drawImage(image_file, 0, 0, image_width, image_height)
+        c.save()
 
-            pdf.set_font("Arial", size=9)
-            pdf.set_y(pdf.get_y() + (max_cell_height - cell_height)/2)
+        print(f"Generated {pdf_file}")
 
-            for cell in row[:num_cols]:
-                wrapped_text = wrap_text(cell, cell_width - 6, pdf)  # Smaller width for padding
-                pdf.multi_cell(cell_width, 8, wrapped_text, border=1, align='C') # 8 is line height
-                pdf.set_x(pdf.get_x() + cell_width)
-
-            pdf.ln(max_cell_height - 8) # Move down to start next row
-    pdf.output(os.path.join(folder, "bingo_boards.pdf"))  # <--- This line was missing!
-    print(f'Saved bingo boards as {os.path.join(folder, "bingo_boards.pdf")}')
-
-
-# Example usage
+# Example usage (no changes needed here)
 generate_bingo_boards('template.csv', 'commercial_brands.txt', 'hollywood_celebs.txt', 'football_related_activities.txt', 5)
 display_bingo_boards('bingo_csv')
