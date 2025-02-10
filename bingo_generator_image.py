@@ -4,6 +4,7 @@ import os
 from fpdf import FPDF
 from PIL import Image, ImageDraw, ImageFont
 from reportlab.pdfgen import canvas  # Import reportlab here
+from reportlab.lib.pagesizes import letter, landscape
 
 def load_words(filename):
     with open(filename, 'r') as file:
@@ -55,34 +56,43 @@ def generate_bingo_boards(template_file, company_file, hollywood_file, football_
             writer.writerows(board)
         print(f'Generated {output_filename}')
 
+draw = None  # Declare draw globally
+font = None #Declare font globally
 
-def wrap_text(text, width, pdf):  # Add pdf as an argument
+def wrap_text(text, width, font):
     """Wraps text to fit within a specified width."""
     words = text.split()
     lines = []
     current_line = ""
+    dummy_img = Image.new('RGB', (1, 1))  # Dummy image
+    draw = ImageDraw.Draw(dummy_img)  # Create a dummy draw object
+    
     for word in words:
-        if pdf.get_string_width(current_line + word) < width:  # Use the passed pdf
+        text_width = draw.textlength(current_line + word, font=font)
+        if text_width < width:
             current_line += word + " "
         else:
             lines.append(current_line.strip())
             current_line = word + " "
+    
     lines.append(current_line.strip())
     return "\n".join(lines)
+
 
 def csv_to_image(csv_file, image_file):
     with open(csv_file, 'r') as f:
         reader = csv.reader(f)
-        data = list(reader)  # Read all data
+        data = list(reader)
 
-    cell_width = 150  # Adjust as needed
-    cell_height = 50  # Adjust as needed
+    cell_width = 150
+    cell_height = 50
     font_size = 12
-    # font = ImageFont.truetype("arial.ttf", font_size)
-    
-    font_path = "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf"  # Example path - REPLACE THIS!
-    font = ImageFont.truetype(font_path, font_size)
-    
+    try:
+        font = ImageFont.truetype("arial.ttf", font_size)  # Or full path
+    except OSError:
+        print("Arial font not found. Using a default font.")
+        font = ImageFont.load_default()
+
     num_cols = len(data[0])
     num_rows = len(data)
     image_width = num_cols * cell_width
@@ -98,45 +108,72 @@ def csv_to_image(csv_file, image_file):
             x2 = x1 + cell_width
             y2 = y1 + cell_height
 
-            draw.rectangle([(x1, y1), (x2, y2)], outline='black')  # Cell borders
+            draw.rectangle([(x1, y1), (x2, y2)], outline='black')
 
-            # Center the text (more or less)
-            text_width, text_height = draw.textsize(cell, font=font)
-            text_x = x1 + (cell_width - text_width) / 2
-            text_y = y1 + (cell_height - text_height) / 2
-            draw.text((text_x, text_y), cell, fill='black', font=font)
+            wrapped_text = wrap_text(cell, cell_width - 10, font)
+            lines = wrapped_text.split('\n')
+
+            # Calculate text height correctly
+            text_height = font.getbbox("A")[3] - font.getbbox("A")[1]  
+            y_offset = (cell_height - len(lines) * text_height) / 2  # Vertical centering
+
+            for i, line in enumerate(lines):
+                text_bbox = draw.textbbox((0, 0), line, font=font)
+                text_width = text_bbox[2] - text_bbox[0]
+                text_x = x1 + (cell_width - text_width) / 2  # Center horizontally
+                text_y = y1 + y_offset + i * text_height  # Place each line correctly
+                draw.text((text_x, text_y), line, fill='black', font=font)
 
     img.save(image_file)
 
 
-def display_bingo_boards(folder):
-    files = [f for f in os.listdir(folder) if f.endswith('.csv')]  # <--- Define files here
+def display_bingo_boards(folder, output_pdf="bingo_boards.pdf"):
+    files = [f for f in os.listdir(folder) if f.endswith('.csv')]  
+    pdf_file = os.path.join(folder, output_pdf)  
+
+    # Create a single PDF in landscape mode
+    c = canvas.Canvas(pdf_file, pagesize=landscape(letter))  
+    page_width, page_height = landscape(letter)  # Get landscape dimensions
+
     for file in files:
         csv_file = os.path.join(folder, file)
         image_file = os.path.join(folder, file.replace(".csv", ".png"))
-        pdf_file = os.path.join(folder, file.replace(".csv", ".pdf"))
 
-        csv_to_image(csv_file, image_file)
+        csv_to_image(csv_file, image_file)  # Generate the image from CSV
 
-        # Use reportlab for PDF conversion (more reliable and cross-platform)
-        with open(csv_file, 'r') as f: #Needed to get image width and height
+        # Read CSV to determine image size
+        with open(csv_file, 'r') as f:
             reader = csv.reader(f)
-            data = list(reader)  # Read all data
+            data = list(reader)  
 
-        cell_width = 150  # Adjust as needed
-        cell_height = 50  # Adjust as needed
+        cell_width = 150  
+        cell_height = 50  
 
         num_cols = len(data[0])
         num_rows = len(data)
         image_width = num_cols * cell_width
         image_height = num_rows * cell_height
 
-        c = canvas.Canvas(pdf_file)
-        c.drawImage(image_file, 0, 0, image_width, image_height)
-        c.save()
+        # Scale the board to fit within the page while maintaining aspect ratio
+        max_width = page_width - 50  # 25pt margin on each side
+        max_height = page_height - 50  # 25pt margin on top/bottom
 
-        print(f"Generated {pdf_file}")
+        scale_factor = min(max_width / image_width, max_height / image_height)
+
+        scaled_width = image_width * scale_factor
+        scaled_height = image_height * scale_factor
+
+        x_offset = (page_width - scaled_width) / 2
+        y_offset = (page_height - scaled_height) / 2
+
+        c.drawImage(image_file, x_offset, y_offset, scaled_width, scaled_height)
+        c.showPage()  # Add a new page for the next board
+
+        print(f"Added {file} to {output_pdf}")
+
+    c.save()  # Save the final PDF
+    print(f"Generated {pdf_file}")
 
 # Example usage (no changes needed here)
-generate_bingo_boards('template.csv', 'commercial_brands.txt', 'hollywood_celebs.txt', 'football_related_activities.txt', 5)
+generate_bingo_boards('template.csv', 'commercial_brands.txt', 'hollywood_celebs.txt', 'football_related_activities.txt', 12)
 display_bingo_boards('bingo_csv')
