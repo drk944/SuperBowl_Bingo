@@ -22,14 +22,14 @@ The board is setup such that to get 7 in a row in any direction, a bingo will co
 
 This specific format can be edited, as well as all the different bingo squares, see "Making your own game" below for more information, although the size of the board is untested beyond 7x7.
 
-# Making Your Own Game
+# Making Your Own Cards
 To create your own bingo game you will need to have Python installed on your computer along with the Pillow library. You can install Pillow using pip:
 
 ```
 pip install pillow
 ```
 
-## Customizing the Game
+## Customizing the Cards
 To customize square names or layout, you can edit the files inside of the "squares" folder.
 ### Template.csv
 This file contains the template for the bingo board layout. Each cell corresponds to a square on the bingo board. You can modify the layout by changing the values in this file.
@@ -43,9 +43,9 @@ The values inside of template.csv correspond to the following categories:
 - e: Free Space (Halftime Show)
 
 **Constraints:**
-- Free space only works for the center of the board unless you provide your own custom template.
-- Board size must be odd
 - I only provide a template for 7x7 boards, so if you change the size you'll need to create your own template.
+- Free space only works for the center of the board unless you provide your own custom template.
+  - Free space shows up as a blank space because the template has a logo in the center square.
 
 ### Other .txt files
 Simply add your own events or people to the corresponding text files. Each line in the text file represents a different square that can be randomly selected for the bingo board. Be careful to not make them too big, as they may not fit on the board properly.
@@ -68,7 +68,7 @@ Running `python bingo_generator.py -n 10` will generate a PDF containing 10 uniq
 
 # TODO:
 This was a great first run, for next year though there's some obvious issues and knowing myself, I won't fix until next Feburary.
-1. (Yearly) Update each of the bingo items to be game specific
+1. (Yearly) Update each of the bingo items to be game specific (Done by searching the web for expected commercials and celebrities)
 2. Ensure no duplicate boards are created
 3. Test with different board sizes
 4. Server approach so people can create their own boards without needing to run python code
