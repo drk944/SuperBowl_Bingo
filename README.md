@@ -50,6 +50,9 @@ The values inside of template.csv correspond to the following categories:
 ### Other .txt files
 Simply add your own events or people to the corresponding text files. Each line in the text file represents a different square that can be randomly selected for the bingo board. Be careful to not make them too big, as they may not fit on the board properly.
 
+### Template Image
+I created the template using Google Drawings and exported it as a PNG. You can copy mine here: https://docs.google.com/drawings/d/1oijXkY2x03rTtMsZzRx8FljCl141CdhuPSBY3VRjIbs/edit?usp=sharing
+
 ## Running the Code
 ```
 usage: bingo_generator.py [-h] [-n NUM] [-t TEMPLATE] [-o OUTPUT]
