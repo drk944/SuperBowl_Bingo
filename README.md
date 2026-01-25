@@ -72,6 +72,7 @@ This was a great first run, for next year though there's some obvious issues and
 2. Ensure no duplicate boards are created
 3. Test with different board sizes
 4. Server approach so people can create their own boards without needing to run python code
+5. Updating commercials to be logos would be really cool
 
 # History
 I wrote this the morning of the Super Bowl 59 (Feb 2025)to create a fun bingo game so that the non-sports family members could still participate and have something fun to do. The game ended up being really fun and no one got a bingo until the 4th quarter, in which within 5 minutes of gametime 2 more people also got a bingo! About 10 people in total played.
