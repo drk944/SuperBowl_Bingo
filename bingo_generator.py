@@ -131,7 +131,7 @@ def process_csv_to_template(game_boards, template_path, output_path):
                     spacing=4
                 )
         generated_images.append(img.convert("RGB"))
-        img.save(f"bingo_board.png") # Used for making banner image only
+        # img.save(f"bingo_board.png") # Used for making banner image only
     
     # Save all images to one PDF
     if generated_images:
