@@ -26,7 +26,7 @@ This specific format can be edited, as well as all the different bingo squares, 
 
 There's two options to create your own bingo cards:
 
-1. Go to this link and follow the instructions there: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/drk944/SuperBowl_Bingo/blob/main/bingo_generator.ipynb)
+1. Go to this link and follow the instructions there: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/drk944/SuperBowl_Bingo/blob/main/bingo_generator_notebook.ipynb)
 
 2. Clone this repository to your local machine and run the code yourself.
 To create your own bingo cards on your computer you will need to have Python installed on your computer along with the Pillow library. You can install Pillow using pip:
@@ -78,12 +78,13 @@ Running `python bingo_generator.py -n 10` will generate a PDF containing 10 uniq
 # TODO:
 This was a great first run, for next year though there's some obvious issues and knowing myself, I won't fix until next Feburary.
 1. (Yearly) Update each of the bingo items to be game specific (Done by searching the web for expected commercials and celebrities)
-2. Ensure no duplicate boards are created
+2. Ensure no duplicate boards or rows are created
 3. Test with different board sizes
-4. Server approach so people can create their own boards without needing to run python code
-5. Updating commercials to be logos would be really cool
+4. Updating commercials to be logos would be really cool
 
 # History
 I wrote this the morning of the Super Bowl 59 (Feb 2025)to create a fun bingo game so that the non-sports family members could still participate and have something fun to do. The game ended up being really fun and no one got a bingo until the 4th quarter, in which within 5 minutes of gametime 2 more people also got a bingo! About 10 people in total played.
 
 I learned a lot from the first year and have since improved the code, formatting, and playability. The first year had some tiles that were too specific to the game, so I eased up on that for this current version.
+
+In the 2nd year (Super Bowl 60, Feb 2026) I updated the bingo squares to be more general and less specific to the actual game. I also created a Jupyter notebook to allow for anyone to easily customize their own bingo cards without needing to run code locally.
