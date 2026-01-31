@@ -8,16 +8,7 @@ def load_words(filename):
     with open(filename, 'r') as file:
         return [line.strip() for line in file if line.strip()]
 
-def generate_bingo_boards(template_file, company_file, hollywood_file, football_file, n):
-    # Load template
-    with open(template_file, 'r') as file:
-        reader = csv.reader(file)
-        template = [row for row in reader]
-    
-    # Load category words
-    company_words = load_words(company_file)
-    hollywood_words = load_words(hollywood_file)
-    football_words = load_words(football_file)
+def generate_bingo_boards(template, company_words, hollywood_words, football_words, n):
         
     game_boards = []
 
@@ -140,7 +131,7 @@ def process_csv_to_template(game_boards, template_path, output_path):
                     spacing=4
                 )
         generated_images.append(img.convert("RGB"))
-        # img.save(f"bingo_board.png") # Used for making banner image only
+        img.save(f"bingo_board.png") # Used for making banner image only
     
     # Save all images to one PDF
     if generated_images:
@@ -184,10 +175,15 @@ def main():
         print(f"❌ Error: Could not find template at {args.template}")
         return
 
+    # Load template
+    with open('squares/template.csv', 'r') as file:
+        reader = csv.reader(file)
+        template = [row for row in reader]
+
     print(f"🚀 Starting generation for {args.num} boards...")
     print(f"📍 Using template: {args.template}")
 
-    game_boards = generate_bingo_boards('squares/template.csv', 'squares/commercial_brands.txt', 'squares/hollywood_celebs.txt', 'squares/football_related_activities.txt', args.num)
+    game_boards = generate_bingo_boards(template, load_words('squares/commercial_brands.txt'), load_words('squares/hollywood_celebs.txt'), load_words('squares/football_related_activities.txt'), args.num)
     process_csv_to_template(game_boards, args.template, args.output)
 
 

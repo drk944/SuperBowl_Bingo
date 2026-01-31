@@ -3,18 +3,18 @@ Simple Super Bowl Bingo generator
 
 When watching the game just isn't enough! Super Bowl Bingo is actually a really fun way to get everyone involved in the game, even if they don't know much about football.
 
-<img src="helpers/Super Bowl 59 Example Board.png" alt="Super Bowl 59 Example Board" width="400"/><br>
+<img src="helpers/Super Bowl 60 Example Board.png" alt="Super Bowl 60 Example Board" width="400"/><br>
 
 # How to Play
 Simply download the appropriate pdf file and print out as many pages as you need. Each player should get their own unique bingo card.
 
 The board is a 7x7 and there are three categories of events:
 1. Commerical Brands
-  a. Mtn Dew, Doritos, Jeep, etc
+  a. Mtn Dew, Doritos, Movie Trailers, etc
 3. Celebrity appearance (either at game or in commercial)
-  a. Taylor Swift, Matt Damon, Paul Rudd
+  a. Taylor Swift, Serena Williams, Peyton Manning
 5. Actual things that happen in the game
-  a. Missed Field Goal, Interception, pass interference, etc
+  a. Missed Field Goal, Interception, Pass Interference, etc
 
 The "FREE SPACE" in the center of the board is the halftime show, which is guaranteed to happen but won't trigger until halfway through the game.
 

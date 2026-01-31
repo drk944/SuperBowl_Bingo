@@ -1,10 +1,8 @@
-Eagles Pass interference
-Chiefs Pass interference
-Eagles 3 & out
-Chiefs 3 & out
-Eagles Def. Interception
-Chiefs Def. Interception
-Roughing the Passer
+Seahawks Pass interference
+Patriots Pass interference
+Seahawks Def. Interception
+Patriots Def. Interception
+Roughing the Passer Penalty
 Missed field goal/XP
 2pt conversion attempt
 4th down stop
@@ -15,10 +13,9 @@ Coaches challenge
 Def. fumble recovery
 Punt return 10+ yards
 35+ yard gain
-Injury timeout
-Xavier Worthy TD
-Isiah Pacheco TD
-Travis Kelce TD
-A.J. Brown TD
-DeVonta Smith TD
-Saquan Barkley TD
+Stefon Diggs (Pats #8) TD
+Hunter Henry (Pats #85) TD
+Kayshon Boutte (Pats #9) TD
+A.J. Barner (SEA #88) TD
+Jaxon Smith-Njigba (SEA #11) TD
+Kenneth Walker (SEA #9) TD
