@@ -23,7 +23,13 @@ The board is setup such that to get 7 in a row in any direction, a bingo will co
 This specific format can be edited, as well as all the different bingo squares, see "Making your own game" below for more information, although the size of the board is untested beyond 7x7.
 
 # Making Your Own Cards
-To create your own bingo game you will need to have Python installed on your computer along with the Pillow library. You can install Pillow using pip:
+
+There's two options to create your own bingo cards:
+
+1. Go to this link and follow the instructions there: [![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/drk944/SuperBowl_Bingo/blob/main/bingo_generator.ipynb)
+
+2. Clone this repository to your local machine and run the code yourself.
+To create your own bingo cards on your computer you will need to have Python installed on your computer along with the Pillow library. You can install Pillow using pip:
 
 ```
 pip install pillow
