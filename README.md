@@ -3,6 +3,9 @@ Simple Super Bowl Bingo generator
 
 When watching the game just isn't enough! Super Bowl Bingo is actually a really fun way to get everyone involved in the game, even if they don't know much about football.
 
+## Download Ready to Print Cards HERE:
+[📥 Download Ready-to-Print Bingo Cards (PDF)](https://raw.githubusercontent.com/drk944/SuperBowl_Bingo/main/2026%20Super%20Bowl%2060%20Bingo%20x20.pdf)
+
 <img src="helpers/Super Bowl 60 Example Board.png" alt="Super Bowl 60 Example Board" width="400"/><br>
 
 # How to Play
